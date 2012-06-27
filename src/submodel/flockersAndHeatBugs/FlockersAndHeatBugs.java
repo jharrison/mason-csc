@@ -15,8 +15,12 @@ public class FlockersAndHeatBugs extends SimState
 	public FlockersAndHeatBugs(long seed) {
 		super(seed);
 		flockers = new Flockers(seed);
-//		flockers.schedule = schedule;	// because Flockers doesn't overload the constructor that takes a schedule
 		heatBugs = new HeatBugs(seed);
+		
+		// This alternate approach would put the submodels and supermodel (hah!) all on the same schedule.
+		// Doing it like this requires the agents to retrieve the submodel from this supermodel, 
+		// but then it works all by itself. However, the GUIState doesn't handle all the updates properly.
+//		flockers.schedule = schedule;	// because Flockers doesn't overload the constructor that takes a schedule
 //		heatBugs.schedule = schedule;	// because HeatBugs doesn't overload the constructor that takes a schedule
 		
 	}
