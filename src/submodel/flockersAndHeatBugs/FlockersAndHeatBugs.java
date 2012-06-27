@@ -21,6 +21,13 @@ public class FlockersAndHeatBugs extends SimState
 		
 	}
 	
+	
+//	/**
+//	 * This function allows a Steppable to get a specific type of simulation. 
+//	 * This would be handy in cases where the model contains submodels.
+//	 * @param c
+//	 * @return
+//	 */
 //	@Override
 //	public SimState getSimulation(Class<?> c) {
 //		if (c.equals(Flockers.class))	return flockers;
