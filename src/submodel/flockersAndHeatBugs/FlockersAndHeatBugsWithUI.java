@@ -11,7 +11,6 @@ import sim.portrayal.inspector.TabbedInspector;
 
 public class FlockersAndHeatBugsWithUI extends GUIState
 {
-
 	FlockersWithUI flockersWithUI;
 	HeatBugsWithUI heatBugsWithUI;
 
@@ -55,6 +54,10 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 	@Override
 	public boolean step() {
 		boolean result = super.step();
+		
+		// Explicitly calling the GUIState step functions results in calls to their
+		// respective SimState's step functions. It also calls all the before and 
+		// after stuff that keeps the Display2D up to date.
 		flockersWithUI.step();
 		heatBugsWithUI.step();
 
@@ -67,11 +70,9 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 		heatBugsWithUI.quit();
 	}
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		new FlockersAndHeatBugsWithUI().createController();
+		// This would actually create three separate controllers:
 		// new FlockersWithUI().createController();
 		// new HeatBugsWithUI().createController();
 	}
