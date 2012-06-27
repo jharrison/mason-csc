@@ -42,8 +42,8 @@ public /*strictfp*/ class HeatBug implements Steppable
         
     public void step( final SimState state )
         {
-        HeatBugs hb = (HeatBugs)state;
-//        HeatBugs hb = ((FlockersAndHeatBugs)state).heatBugs;
+//        HeatBugs hb = (HeatBugs)state;
+        HeatBugs hb = (HeatBugs)state.getSimulation(HeatBugs.class);
         
         Int2D location = hb.buggrid.getObjectLocation(this);
         int myx = location.x;

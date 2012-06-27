@@ -58,8 +58,14 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 		// Explicitly calling the GUIState step functions results in calls to their
 		// respective SimState's step functions. It also calls all the before and 
 		// after stuff that keeps the Display2D up to date.
-		flockersWithUI.step();
-		heatBugsWithUI.step();
+		if (!((FlockersAndHeatBugs)state).sharedSchedule) {
+			flockersWithUI.step();
+			heatBugsWithUI.step();
+		}
+		else {		
+			flockersWithUI.display.step(state);
+			heatBugsWithUI.display.step(state);
+		}
 
 		return result;
 	}

@@ -1,0 +1,46 @@
+Overview:
+This project is a proof-of-concept for a submodel architecture for MASON. The class FlockersAndHeatBugs contains instances of Flockers and HeatBugs.
+The class FlockersAndHeatBugsWithUI contains instances of FlockersWithUI and HeatBugsWithUI. In this document, I use the following terms:
+	"submodel" 		refers to either Flockers or HeatBugs
+	"submodelUI" 	refers to either FlockersWithUI or HeatBugsWithUI
+	"supermodel" 	refers to FlockersAndHeatBugs
+	"supermodelUI" 	refers to FlockersAndHeatBugsWithUI
+
+Design Goals:
+- The submodel code should remain unchanged. If changes are necessary, they should be as minimal as possible.
+- The submodel should retain the ability to run without the supermodel.
+- The coordination between submodels will happen in the supermodel.
+- Submodels shouldn't need to know the supermodel exists.
+
+
+Details:
+
+There are two competing methods for handling the schedules.
+
+1) Shared schedule
+In this approach the submodels are given the same schedule that the supermodel is using. They each schedule their steppables and everything runs together.
+Pros:
+- This approach works (should work anyway) when running headless.
+- Agents can intermingle however you want them to.
+Cons:
+- The agent.step(...) functions get called with the supermodel as a parameter. (solved)
+- The GUI doesn't automatically update because the sub-GUIs never have their step functions called. (solved)
+- The submodel.start() functions clear the schedule before scheduling their stuff. This means only the last one ends up with things scheduled.
+	Maybe we could let them add their agents to separate schedules, then merge the schedules and share the merged schedule.
+
+
+2) Separate schedules
+In this approach each submodel has its own schedule and they run more or less independently, though they will be synced every step.
+Pros:
+- This is the only approach that currently works fully from the GUI.
+Cons:
+- The separate schedules aren't run by default. They have to be run manually from supermodelUI.step(). (solved)
+- This method will not work headless (unless we find a way to run the schedules manually)
+- We have limited control over how to intermingle the schedules. They take turns running one step. 
+	It may be hard to handle more complicated scenarios.
+
+
+Challenges common to both:
+- There's a redundancy where submodel.start() is called twice. 
+	First, when supermodelUI.start() calls super.start(), which then calls supermodel.start(). 
+	Second, when supermodelUI.start() calls submodelUI.start(), which calls its super.start(), which calls submodel.start().
