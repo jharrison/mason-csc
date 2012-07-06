@@ -44,3 +44,28 @@ Challenges common to both:
 - There's a redundancy where submodel.start() is called twice. 
 	First, when supermodelUI.start() calls super.start(), which then calls supermodel.start(). 
 	Second, when supermodelUI.start() calls submodelUI.start(), which calls its super.start(), which calls submodel.start().
+	
+	
+---
+
+Use anonymous class to overide Flocker.avoidance(). The new version will also factor in the heatbugs. Obviously, they need to 
+be in the same Display2D.
+
+[ ] FlockersAndHeatBugs.start() - on the second time through, the schedules are all pointing to the same schedule, 
+	so merging them is invalid and creates an infinite loop.
+[ ] The duplicate calls to submodel.start() are causing problems.
+
+--- 
+
+The combined version (HotFlockers) will show the heatBugs and flockers in the same Display2D. The flockers will steer away from heat.
+
+This will require:
+[x] modified version of Flocker with a step() function that includes another vector (away-from-heat) in the calculation
+[x] modified version of Flockers that overrides start() and uses the modified Flocker.
+[x] new SimState that provides a function to calculate the away-from-heat vector.
+
+Double2D calcAwayFromHeat(Double2D loc, double radius) {
+	
+}
+
+

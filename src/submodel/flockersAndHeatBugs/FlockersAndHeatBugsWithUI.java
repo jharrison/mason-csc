@@ -2,6 +2,7 @@ package submodel.flockersAndHeatBugs;
 
 import submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
 import submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
+import sim.display.Console;
 import sim.display.Controller;
 import sim.display.GUIState;
 import sim.engine.SimState;
@@ -49,6 +50,8 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 		super.init(c);
 		flockersWithUI.init(c);
 		heatBugsWithUI.init(c);
+
+		((Console)controller).setSize(400, 600);
 	}
 
 	@Override

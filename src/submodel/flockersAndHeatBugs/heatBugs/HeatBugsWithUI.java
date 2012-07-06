@@ -23,8 +23,8 @@ public class HeatBugsWithUI extends GUIState
     public Display2D display;
     public JFrame displayFrame;
 
-    FastValueGridPortrayal2D heatPortrayal = new FastValueGridPortrayal2D("Heat");
-    SparseGridPortrayal2D bugPortrayal = new SparseGridPortrayal2D();
+    public FastValueGridPortrayal2D heatPortrayal = new FastValueGridPortrayal2D("Heat");
+    public SparseGridPortrayal2D bugPortrayal = new SparseGridPortrayal2D();
 
 // uncomment this to try out trails  (also need to uncomment out some others in this file, look around)
 // you'll also need to cause a Bug to wander a lot more in order to see the trail -- I suggest setting

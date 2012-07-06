@@ -22,10 +22,10 @@ public class FlockersAndHeatBugs extends SimState
 		// This alternate approach would put the submodels and supermodel (hah!) all on the same schedule.
 		// Doing it like this requires the agents to retrieve the submodel from this supermodel, 
 		// but then it works all by itself. However, the GUIState doesn't handle all the updates properly.
-		if (sharedSchedule) {
-			flockers.schedule = schedule;	// because Flockers doesn't overload the constructor that takes a schedule
-			heatBugs.schedule = schedule;	// because HeatBugs doesn't overload the constructor that takes a schedule
-		}
+//		if (sharedSchedule) {
+//			flockers.schedule = schedule;	// because Flockers doesn't overload the constructor that takes a schedule
+//			heatBugs.schedule = schedule;	// because HeatBugs doesn't overload the constructor that takes a schedule
+//		}
 		
 	}
 	
@@ -49,7 +49,14 @@ public class FlockersAndHeatBugs extends SimState
 	public void start() {
 		super.start();
 		flockers.start();
-//		heatBugs.start();
+		heatBugs.start();
+		
+		if (sharedSchedule) {
+			schedule.merge(flockers.schedule);
+//			schedule.merge(heatBugs.schedule);
+//			flockers.schedule = schedule;
+//			heatBugs.schedule = schedule;
+		}
 		
 		// unless we schedule something the simulation will just end, so do the NO-OP
 		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	} });
