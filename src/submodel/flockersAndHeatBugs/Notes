@@ -48,7 +48,7 @@ Challenges common to both:
 	
 ---
 
-Use anonymous class to overide Flocker.avoidance(). The new version will also factor in the heatbugs. Obviously, they need to 
+[x] Use anonymous class to overide Flocker.avoidance(). The new version will also factor in the heatbugs. Obviously, they need to 
 be in the same Display2D.
 
 [ ] FlockersAndHeatBugs.start() - on the second time through, the schedules are all pointing to the same schedule, 

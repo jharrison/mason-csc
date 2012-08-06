@@ -19,7 +19,7 @@ public class FlockersAndHeatBugs extends SimState
 		flockers = new Flockers(seed);
 		heatBugs = new HeatBugs(seed);
 		
-		// This alternate approach would put the submodels and supermodel (hah!) all on the same schedule.
+		// This alternate approach would put the submodels and supermodel all on the same schedule.
 		// Doing it like this requires the agents to retrieve the submodel from this supermodel, 
 		// but then it works all by itself. However, the GUIState doesn't handle all the updates properly.
 //		if (sharedSchedule) {
