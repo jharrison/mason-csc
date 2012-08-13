@@ -5,7 +5,6 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
-import submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
 import submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
 import sim.display.Console;
 import sim.display.Controller;
@@ -30,8 +29,12 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
 		heatBugsWithUI = new HeatBugsWithUI(((HotFlockersAndHeatBugs)state).heatBugs);
 	}
 
+	@SuppressWarnings("serial")
 	public HotFlockersAndHeatBugsWithUI() {
-		super(new HotFlockersAndHeatBugs(System.currentTimeMillis()));
+		super(new HotFlockersAndHeatBugs(System.currentTimeMillis()) {
+			@Override
+			public void startSubmodels() {}		// do nothing, they'll be started by their GUI states 		
+		});
 		flockersWithUI = new FlockersWithUI(((HotFlockersAndHeatBugs)state).flockers);
 		heatBugsWithUI = new HeatBugsWithUI(((HotFlockersAndHeatBugs)state).heatBugs);
 	}
@@ -54,6 +57,7 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
 		super.start();
 		flockersWithUI.start();
 		heatBugsWithUI.start();
+		((HotFlockersAndHeatBugs)state).mergeSchedules();
 	}
 
 	public void init(final Controller c) {
@@ -86,19 +90,8 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
 	@Override
 	public boolean step() {
 		boolean result = super.step();
-		
-		// Explicitly calling the GUIState step functions results in calls to their
-		// respective SimState's step functions. It also calls all the before and 
-		// after stuff that keeps the Display2D up to date.
-		if (!((HotFlockersAndHeatBugs)state).sharedSchedule) {
-			flockersWithUI.step();
-			heatBugsWithUI.step();
-		}
-		else {		
-			flockersWithUI.display.step(state);
-			heatBugsWithUI.display.step(state);
-		}
-		
+		flockersWithUI.display.step(state);
+		heatBugsWithUI.display.step(state);
 		display.step(state);	// For some reason, the hybrid display only updates the first run. Subsequent runs don't update. TODO figure out why
 
 		return result;

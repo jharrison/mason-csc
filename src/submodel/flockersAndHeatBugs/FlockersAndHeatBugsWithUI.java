@@ -21,8 +21,12 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 		heatBugsWithUI = new HeatBugsWithUI(((FlockersAndHeatBugs)state).heatBugs);
 	}
 
+	@SuppressWarnings("serial")
 	public FlockersAndHeatBugsWithUI() {
-		super(new FlockersAndHeatBugs(System.currentTimeMillis()));
+		super(new FlockersAndHeatBugs(System.currentTimeMillis()) {
+			@Override
+			public void startSubmodels() {}		// do nothing, they'll be started by their GUI states 		
+		});
 		flockersWithUI = new FlockersWithUI(((FlockersAndHeatBugs)state).flockers);
 		heatBugsWithUI = new HeatBugsWithUI(((FlockersAndHeatBugs)state).heatBugs);
 	}
@@ -40,10 +44,12 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 		return i;
 	}
 
+    @Override
 	public void start() {
 		super.start();
 		flockersWithUI.start();
 		heatBugsWithUI.start();
+		((FlockersAndHeatBugs)state).mergeSchedules();
 	}
 
 	public void init(final Controller c) {
@@ -57,18 +63,8 @@ public class FlockersAndHeatBugsWithUI extends GUIState
 	@Override
 	public boolean step() {
 		boolean result = super.step();
-		
-		// Explicitly calling the GUIState step functions results in calls to their
-		// respective SimState's step functions. It also calls all the before and 
-		// after stuff that keeps the Display2D up to date.
-		if (!((FlockersAndHeatBugs)state).sharedSchedule) {
-			flockersWithUI.step();
-			heatBugsWithUI.step();
-		}
-		else {		
-			flockersWithUI.display.step(state);
-			heatBugsWithUI.display.step(state);
-		}
+		flockersWithUI.display.step(state);
+		heatBugsWithUI.display.step(state);
 
 		return result;
 	}

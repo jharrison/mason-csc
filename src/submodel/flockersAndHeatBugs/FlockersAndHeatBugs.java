@@ -12,21 +12,12 @@ public class FlockersAndHeatBugs extends SimState
 	public Flockers flockers;
 	public HeatBugs heatBugs;
 	
-	public boolean sharedSchedule = false;	// this allows for a comparison between the two scheduling approaches
+	public boolean sharedSchedule = true;	// this allows for a comparison between the two scheduling approaches
 
 	public FlockersAndHeatBugs(long seed) {
 		super(seed);
 		flockers = new Flockers(seed);
 		heatBugs = new HeatBugs(seed);
-		
-		// This alternate approach would put the submodels and supermodel all on the same schedule.
-		// Doing it like this requires the agents to retrieve the submodel from this supermodel, 
-		// but then it works all by itself. However, the GUIState doesn't handle all the updates properly.
-//		if (sharedSchedule) {
-//			flockers.schedule = schedule;	// because Flockers doesn't overload the constructor that takes a schedule
-//			heatBugs.schedule = schedule;	// because HeatBugs doesn't overload the constructor that takes a schedule
-//		}
-		
 	}
 	
 	
@@ -43,24 +34,52 @@ public class FlockersAndHeatBugs extends SimState
 		
 		return this;
 	}
+	
+	/**
+	 * This function exists so it can be overridden and stubbed out when running from the GUI.
+	 */
+	public void startSubmodels() {
+		flockers.start();
+		heatBugs.start();	
+		mergeSchedules();	
+	}
+	
+	public void mergeSchedules() {
+		if (sharedSchedule) {
+			schedule.merge(flockers.schedule);
+			schedule.merge(heatBugs.schedule);
+			flockers.schedule = schedule;
+			heatBugs.schedule = schedule;
+		}
+	}
 
 	@SuppressWarnings("serial")
 	@Override
 	public void start() {
 		super.start();
-		flockers.start();
-		heatBugs.start();
+		startSubmodels();
 		
-		if (sharedSchedule) {
-			schedule.merge(flockers.schedule);
-//			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;
-//			heatBugs.schedule = schedule;
+		if (!sharedSchedule) {
+			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
+				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
+					flockers.schedule.step(flockers);
+				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
+					heatBugs.schedule.step(heatBugs);
+				
+			}}, 0, 1.0);
 		}
 		
 		// unless we schedule something the simulation will just end, so do the NO-OP
-		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	} });
+		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	
+			System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
+					schedule.getTime(), schedule.getSteps(),
+					flockers.schedule.getTime(), flockers.schedule.getSteps(),
+					heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
+			
+		}}, 1, 1.0);
 	}
+	
+	
 
 	public static void main(String[] args) {
 		doLoop(FlockersAndHeatBugs.class, args);

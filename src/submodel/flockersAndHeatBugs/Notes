@@ -26,7 +26,7 @@ Cons:
 - The agent.step(...) functions get called with the supermodel as a parameter. (solved)
 - The GUI doesn't automatically update because the sub-GUIs never have their step functions called. (solved)
 - The submodel.start() functions clear the schedule before scheduling their stuff. This means only the last one ends up with things scheduled.
-	Maybe we could let them add their agents to separate schedules, then merge the schedules and share the merged schedule.
+	Maybe we could let them add their agents to separate schedules, then merge the schedules and share the merged schedule. (solved)
 
 
 2) Separate schedules
@@ -54,6 +54,10 @@ be in the same Display2D.
 [ ] FlockersAndHeatBugs.start() - on the second time through, the schedules are all pointing to the same schedule, 
 	so merging them is invalid and creates an infinite loop.
 [ ] The duplicate calls to submodel.start() are causing problems.
+	Solutions:
+		1) Make a flag in the super SimState that would allow the GUI to prevent the calls to start()
+		2) When running from the GUI, override the supermodel's start function to do everything but call start on the submodels
+		3) Move the flockers.start() and heatBugs.start() into a new function called startSubmodels(). When running from the GUI, override it and do nothing.
 
 --- 
 

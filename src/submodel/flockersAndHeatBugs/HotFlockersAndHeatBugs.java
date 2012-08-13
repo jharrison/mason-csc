@@ -17,7 +17,7 @@ public class HotFlockersAndHeatBugs extends SimState
 	public Flockers flockers;
 	public HeatBugs heatBugs;
 	
-	public boolean sharedSchedule = false;	// this allows for a comparison between the two scheduling approaches
+	public boolean sharedSchedule = true;	// this allows for a comparison between the two scheduling approaches
 
 	double heatAvoidance = 0.1;
 	public double getHeatAvoidance() { return heatAvoidance; }
@@ -30,6 +30,10 @@ public class HotFlockersAndHeatBugs extends SimState
 	public boolean flockersAvoidHeat = false;
 	public boolean getFlockersAvoidHeat() { return flockersAvoidHeat; }
 	public void setFlockersAvoidHeat(boolean val) { flockersAvoidHeat = val; }
+	
+	public boolean syncScheduleTimes = false;
+	public boolean getSyncScheduleTimes() { return syncScheduleTimes; }
+	public void setSyncScheduleTimes(boolean val) { syncScheduleTimes = val; }
 	
 	
 	double flockerHeat = 1.0e5;
@@ -108,7 +112,8 @@ public class HotFlockersAndHeatBugs extends SimState
 		            flockers.setObjectLocation(flocker, location);
 		            flocker.flockers = flockers;
 		            flocker.theFlock = this;
-		            schedule.scheduleRepeating(flocker);
+//		            schedule.scheduleRepeating(flocker);	// this was the original
+		            schedule.scheduleRepeating(0, flocker, 0.1);
 	            } // end for
 			} // end start()
 			
@@ -196,23 +201,50 @@ public class HotFlockersAndHeatBugs extends SimState
 		
 		return this;
 	}
+	
+	/**
+	 * This function exists so it can be overridden and stubbed out when running from the GUI.
+	 */
+	public void startSubmodels() {
+		flockers.start();
+		heatBugs.start();	
+		mergeSchedules();	
+	}
+	
+	public void mergeSchedules() {
+		if (sharedSchedule) {
+			schedule.merge(flockers.schedule);
+			schedule.merge(heatBugs.schedule);
+			flockers.schedule = schedule;
+			heatBugs.schedule = schedule;
+		}
+	}
+	
 
 	@SuppressWarnings("serial")
 	@Override
 	public void start() {
 		super.start();
-		flockers.start();
-		heatBugs.start();
+		startSubmodels();
 		
-		if (sharedSchedule) {
-			schedule.merge(flockers.schedule);
-//			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;
-//			heatBugs.schedule = schedule;
+		if (!sharedSchedule) {
+			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
+				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
+					flockers.schedule.step(flockers);
+				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
+					heatBugs.schedule.step(heatBugs);
+				
+			}}, 0, 1.0);
 		}
 		
 		// unless we schedule something the simulation will just end, so do the NO-OP
-		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	} });
+		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	
+			System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
+					schedule.getTime(), schedule.getSteps(),
+					flockers.schedule.getTime(), flockers.schedule.getSteps(),
+					heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
+			
+		}}, 1, 1.0);
 	}
 	
 	
