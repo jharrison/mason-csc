@@ -59,6 +59,10 @@ be in the same Display2D.
 		2) When running from the GUI, override the supermodel's start function to do everything but call start on the submodels
 		3) Move the flockers.start() and heatBugs.start() into a new function called startSubmodels(). When running from the GUI, override it and do nothing.
 
+[ ] Think about recursion. Submodel with submodels.
+[ ] Instead of passing the class into getSimulation, pass a unique hashable tag (e.g. string).
+[ ] Work on an actual subclass of SimState that handles the basics of this thing.
+
 --- 
 
 The combined version (HotFlockers) will show the heatBugs and flockers in the same Display2D. The flockers will steer away from heat.

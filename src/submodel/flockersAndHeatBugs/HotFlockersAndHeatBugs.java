@@ -112,8 +112,8 @@ public class HotFlockersAndHeatBugs extends SimState
 		            flockers.setObjectLocation(flocker, location);
 		            flocker.flockers = flockers;
 		            flocker.theFlock = this;
-//		            schedule.scheduleRepeating(flocker);	// this was the original
-		            schedule.scheduleRepeating(0, flocker, 0.1);
+		            schedule.scheduleRepeating(flocker);	// this was the original
+//		            schedule.scheduleRepeating(0, flocker, 0.1);
 	            } // end for
 			} // end start()
 			
@@ -215,8 +215,8 @@ public class HotFlockersAndHeatBugs extends SimState
 		if (sharedSchedule) {
 			schedule.merge(flockers.schedule);
 			schedule.merge(heatBugs.schedule);
-			flockers.schedule = schedule;
-			heatBugs.schedule = schedule;
+//			flockers.schedule = schedule;	// no longer necessary
+//			heatBugs.schedule = schedule;	// no longer necessary
 		}
 	}
 	
@@ -233,18 +233,17 @@ public class HotFlockersAndHeatBugs extends SimState
 					flockers.schedule.step(flockers);
 				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
 					heatBugs.schedule.step(heatBugs);
+
+//				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
+//						schedule.getTime(), schedule.getSteps(),
+//						flockers.schedule.getTime(), flockers.schedule.getSteps(),
+//						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
 				
 			}}, 0, 1.0);
 		}
 		
 		// unless we schedule something the simulation will just end, so do the NO-OP
-		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {	
-			System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
-					schedule.getTime(), schedule.getSteps(),
-					flockers.schedule.getTime(), flockers.schedule.getSteps(),
-					heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
-			
-		}}, 1, 1.0);
+//		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {}}, 1, 1.0);
 	}
 	
 	
