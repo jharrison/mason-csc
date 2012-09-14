@@ -17,7 +17,7 @@ public class HotFlockersAndHeatBugs extends SimState
 	public Flockers flockers;
 	public HeatBugs heatBugs;
 	
-	public boolean sharedSchedule = true;	// this allows for a comparison between the two scheduling approaches
+	public boolean sharedSchedule = false;	// this allows for a comparison between the two scheduling approaches
 
 	double heatAvoidance = 0.1;
 	public double getHeatAvoidance() { return heatAvoidance; }
@@ -119,6 +119,10 @@ public class HotFlockersAndHeatBugs extends SimState
 			
 		}; // end new Flockers ... 
 		
+
+		if (!sharedSchedule)
+			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
+		
 	}
 	
 	private void generateFlockerHeat(Double2D loc) {
@@ -215,8 +219,8 @@ public class HotFlockersAndHeatBugs extends SimState
 		if (sharedSchedule) {
 			schedule.merge(flockers.schedule);
 			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;	// no longer necessary
-//			heatBugs.schedule = schedule;	// no longer necessary
+//			flockers.schedule = schedule;	// no longer necessary. TODO Or is it?
+//			heatBugs.schedule = schedule;	// no longer necessary. TODO Or is it?
 		}
 	}
 	
@@ -227,20 +231,20 @@ public class HotFlockersAndHeatBugs extends SimState
 		super.start();
 		startSubmodels();
 		
-		if (!sharedSchedule) {
-			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
-				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
-					flockers.schedule.step(flockers);
-				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
-					heatBugs.schedule.step(heatBugs);
-
-//				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
-//						schedule.getTime(), schedule.getSteps(),
-//						flockers.schedule.getTime(), flockers.schedule.getSteps(),
-//						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
-				
-			}}, 0, 1.0);
-		}
+//		if (!sharedSchedule) {
+//			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
+//				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
+//					flockers.schedule.step(flockers);
+//				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
+//					heatBugs.schedule.step(heatBugs);
+//
+////				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
+////						schedule.getTime(), schedule.getSteps(),
+////						flockers.schedule.getTime(), flockers.schedule.getSteps(),
+////						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
+//				
+//			}}, 0, 1.0);
+//		}
 		
 		// unless we schedule something the simulation will just end, so do the NO-OP
 //		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {}}, 1, 1.0);

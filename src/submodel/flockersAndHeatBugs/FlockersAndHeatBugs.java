@@ -12,12 +12,15 @@ public class FlockersAndHeatBugs extends SimState
 	public Flockers flockers;
 	public HeatBugs heatBugs;
 	
-	public boolean sharedSchedule = true;	// this allows for a comparison between the two scheduling approaches
+	public boolean sharedSchedule = false;	// this allows for a comparison between the two scheduling approaches
 
 	public FlockersAndHeatBugs(long seed) {
 		super(seed);
 		flockers = new Flockers(seed);
 		heatBugs = new HeatBugs(seed);
+		
+		if (!sharedSchedule)
+			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
 	}
 	
 	
@@ -48,8 +51,8 @@ public class FlockersAndHeatBugs extends SimState
 		if (sharedSchedule) {
 			schedule.merge(flockers.schedule);
 			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;		// there's no need for this
-//			heatBugs.schedule = schedule;		// there's no need for this
+//			flockers.schedule = schedule;	// no longer necessary. TODO Or is it?
+//			heatBugs.schedule = schedule;	// no longer necessary. TODO Or is it?
 		}
 	}
 
@@ -59,21 +62,21 @@ public class FlockersAndHeatBugs extends SimState
 		super.start();
 		startSubmodels();
 		
-		if (!sharedSchedule) {
-			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
-				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
-					flockers.schedule.step(flockers);
-				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
-					heatBugs.schedule.step(heatBugs);
-				
-
-				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
-						schedule.getTime(), schedule.getSteps(),
-						flockers.schedule.getTime(), flockers.schedule.getSteps(),
-						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
-				
-			}}, 0, 1.0);
-		}
+//		if (!sharedSchedule) {
+//			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
+//				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
+//					flockers.schedule.step(flockers);
+//				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
+//					heatBugs.schedule.step(heatBugs);
+//				
+//
+//				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
+//						schedule.getTime(), schedule.getSteps(),
+//						flockers.schedule.getTime(), flockers.schedule.getSteps(),
+//						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
+//				
+//			}}, 0, 1.0);
+//		}
 		
 	}
 	
