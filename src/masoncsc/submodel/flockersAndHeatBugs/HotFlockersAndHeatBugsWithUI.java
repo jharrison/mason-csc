@@ -1,11 +1,12 @@
-package submodel.flockersAndHeatBugs;
+package masoncsc.submodel.flockersAndHeatBugs;
 
 import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
-import submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
+import masoncsc.submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
+import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
+
 import sim.display.Console;
 import sim.display.Controller;
 import sim.display.Display2D;

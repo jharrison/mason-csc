@@ -4,8 +4,8 @@
   See the file "LICENSE" for more information
 */
 
-package submodel.flockersAndHeatBugs.heatBugs;
-import submodel.flockersAndHeatBugs.FlockersAndHeatBugs;
+package masoncsc.submodel.flockersAndHeatBugs.heatBugs;
+import masoncsc.submodel.flockersAndHeatBugs.FlockersAndHeatBugs;
 import sim.field.grid.*;
 import sim.util.*;
 import sim.engine.*;

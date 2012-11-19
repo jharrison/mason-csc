@@ -1,6 +1,9 @@
-package submodel.flockersAndHeatBugs;
-import submodel.flockersAndHeatBugs.flockers.Flockers;
-import submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
+package masoncsc.submodel.flockersAndHeatBugs;
+import masoncsc.submodel.flockersAndHeatBugs.flockers.Flockers;
+import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
+import masoncsc.submodel.util.MetaSchedule;
+import masoncsc.submodel.util.MultiSchedule;
+import sim.engine.Schedule;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
@@ -20,7 +23,8 @@ public class FlockersAndHeatBugs extends SimState
 		heatBugs = new HeatBugs(seed);
 		
 		if (!sharedSchedule)
-			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
+			schedule = new MetaSchedule(new SimState[] { flockers, heatBugs } );
+//			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
 	}
 	
 	
@@ -42,6 +46,9 @@ public class FlockersAndHeatBugs extends SimState
 	 * This function exists so it can be overridden and stubbed out when running from the GUI.
 	 */
 	public void startSubmodels() {
+		// TODO in shared schedule model, create new schedules
+		flockers.schedule = new Schedule();
+		heatBugs.schedule = new Schedule();
 		flockers.start();
 		heatBugs.start();	
 		mergeSchedules();	
@@ -51,8 +58,8 @@ public class FlockersAndHeatBugs extends SimState
 		if (sharedSchedule) {
 			schedule.merge(flockers.schedule);
 			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;	// no longer necessary. TODO Or is it?
-//			heatBugs.schedule = schedule;	// no longer necessary. TODO Or is it?
+			flockers.schedule = schedule;	// no longer necessary. TODO Or is it?
+			heatBugs.schedule = schedule;	// no longer necessary. TODO Or is it?
 		}
 	}
 

@@ -1,14 +1,16 @@
-package submodel.flockersAndHeatBugs;
+package masoncsc.submodel.flockersAndHeatBugs;
 
+import masoncsc.submodel.flockersAndHeatBugs.flockers.Flocker;
+import masoncsc.submodel.flockersAndHeatBugs.flockers.Flockers;
+import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
+import masoncsc.submodel.util.MetaSchedule;
+import masoncsc.submodel.util.MultiSchedule;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.field.continuous.Continuous2D;
 import sim.util.Bag;
 import sim.util.Double2D;
 import sim.util.Int2D;
-import submodel.flockersAndHeatBugs.flockers.Flocker;
-import submodel.flockersAndHeatBugs.flockers.Flockers;
-import submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
 
 public class HotFlockersAndHeatBugs extends SimState
 {
@@ -121,7 +123,8 @@ public class HotFlockersAndHeatBugs extends SimState
 		
 
 		if (!sharedSchedule)
-			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
+			schedule = new MetaSchedule(new SimState[] { flockers, heatBugs } );
+//			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
 		
 	}
 	

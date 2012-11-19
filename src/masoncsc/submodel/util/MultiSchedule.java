@@ -1,6 +1,7 @@
-package submodel.flockersAndHeatBugs;
+package masoncsc.submodel.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import sim.engine.Schedule;
@@ -49,21 +50,47 @@ public class MultiSchedule extends Schedule
 		
 		return minTime;
 	}
+	
+	@Override
+	public double time() {
+		return getTime();
+	}
+	
+
+	ArrayList<Schedule> subSteps = new ArrayList<Schedule>();
 
 	@Override
 	public synchronized boolean step(SimState state) {
 		double minTime = Schedule.AFTER_SIMULATION;
 		Schedule minSchedule = null;
+		//TODO: ensure ordering is honored
 		for (Schedule schedule : schedules)
 			if (schedule.getTime() < minTime) {
 				minTime = schedule.getTime();
 				minSchedule = schedule;
 			}
 		
+
+		subSteps.clear();
+		for (Schedule schedule : schedules)
+			if (schedule.getTime() == minTime)
+				subSteps.add(schedule);
+				
+//		if (subSteps.size() > 1) {
+//			Collections.shuffle(subSteps,state.random);
+//		}
+				
+		
 		if (minSchedule != null)
 			minSchedule.step(map.get(minSchedule));
 		
 		return (minTime < Schedule.AFTER_SIMULATION);
+	}
+
+	@Override
+	public boolean scheduleComplete() {
+		// TODO Auto-generated method stub
+		return super.scheduleComplete();
 	}
 
 	/**
