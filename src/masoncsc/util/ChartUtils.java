@@ -20,9 +20,9 @@ public class ChartUtils
      * the user).
      * @param updateInterval How frequently the chart needs refreshed.
      */
-    static public void attachTimeSeriesToChart(XYSeries series, String xLabel, Controller c, int updateInterval)
+    static public void attachTimeSeries(XYSeries series, String xLabel, Controller c, int updateInterval)
     {
-        attachTimeSeriesToChart(new XYSeries[] { series },
+        attachTimeSeries(new XYSeries[] { series },
             series.getDescription(),
             xLabel, 
             series.getDescription(),
@@ -42,7 +42,7 @@ public class ChartUtils
      * the user).
      * @param updateInterval How frequently the chart needs refreshed.
      */
-    static public void attachTimeSeriesToChart(XYSeries[] seriesArray, String title, String xLabel, String yLabel, Controller c,int updateInterval)
+    static public void attachTimeSeries(XYSeries[] seriesArray, String title, String xLabel, String yLabel, Controller c,int updateInterval)
     {
         TimeSeriesChartGenerator chartGen = new TimeSeriesChartGenerator();
         chartGen.setTitle(title);
@@ -68,7 +68,7 @@ public class ChartUtils
      * @param c Controller to register the chart.
      * @return HistogramGenerator which can be used to update data later.
      */
-    static public HistogramGenerator attachHistogramToChart(final double[] data, final int numberOfBins, String title, String xLabel, String yLabel, Controller c)
+    static public HistogramGenerator attachHistogram(final double[] data, final int numberOfBins, String title, String xLabel, String yLabel, Controller c)
     {
         HistogramGenerator gen = new HistogramGenerator();
         gen.setTitle(title);
