@@ -11,9 +11,13 @@ import java.util.List;
  */
 public abstract class ListDataWatcher<T> extends DataWatcher<List<T>>
 {
-    List<T> dataList = new ArrayList<T>();;
+    protected List<T> dataList = new ArrayList<T>();
     
-    @Override
+    public ListDataWatcher() {
+		super();
+	}
+
+	@Override
     public List<T> getDataPoint()
     {
         return dataList;

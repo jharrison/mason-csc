@@ -12,7 +12,10 @@ public class ScreenDataWriter implements DataListener
     public ScreenDataWriter(DataWatcher source)
     {
         // XXX Move this out of constructor?
-        System.out.println(source.getCSVHeader());
+    	String s = source.getCSVHeader();
+    	if (s != null)
+            System.out.println();
+    	
         source.addListener(this);
     }
     
