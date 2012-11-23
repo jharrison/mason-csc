@@ -9,6 +9,8 @@ package masoncsc.datawatcher;
  */
 public class ScreenDataWriter implements DataListener
 {
+    public ScreenDataWriter() { };
+    
     public ScreenDataWriter(DataWatcher source)
     {
         // XXX Move this out of constructor?
