@@ -42,20 +42,22 @@ public class ChartUtils
      * the user).
      * @param updateInterval How frequently the chart needs refreshed.
      */
-    static public void attachTimeSeries(XYSeries[] seriesArray, String title, String xLabel, String yLabel, Controller c,int updateInterval)
+    static public TimeSeriesChartGenerator attachTimeSeries(XYSeries[] seriesArray, String title, String xLabel, String yLabel, Controller c,int updateInterval)
     {
-        TimeSeriesChartGenerator chartGen = new TimeSeriesChartGenerator();
-        chartGen.setTitle(title);
-        chartGen.setXAxisLabel(xLabel);
-        chartGen.setYAxisLabel(yLabel);
+        TimeSeriesChartGenerator gen = new TimeSeriesChartGenerator();
+        gen.setTitle(title);
+        gen.setXAxisLabel(xLabel);
+        gen.setYAxisLabel(yLabel);
         for (XYSeries dw : seriesArray)
-            chartGen.addSeries(dw, null);
+            gen.addSeries(dw, null);
         
-        JFrame frame = chartGen.createFrame();
+        JFrame frame = gen.createFrame();
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         frame.setTitle(title);
         frame.pack();
         c.registerFrame(frame);
+        
+        return gen;
     }
     
     /**
