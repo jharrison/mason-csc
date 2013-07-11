@@ -31,9 +31,7 @@ public /*strictfp*/ class ThreadedDiffuser implements Steppable
                 public void step(SimState state) 
                     {
                     // diffuse top half of field
-//                    HeatBugs heatbugs = (HeatBugs)state;
-                    HeatBugs heatbugs = (HeatBugs)state.getSimulation(HeatBugs.class);
-//                    HeatBugs heatbugs = ((FlockersAndHeatBugs)state).heatBugs;
+                    HeatBugs heatbugs = (HeatBugs)state;
                     int _gridWidth = heatbugs.valgrid.getWidth();  // read-only, so threadsafe with other one
                     diffuse(heatbugs, 0, _gridWidth/2);
                     }
@@ -43,9 +41,7 @@ public /*strictfp*/ class ThreadedDiffuser implements Steppable
                 public void step(SimState state) 
                     {
                     // diffuse bottom half of field
-//                    HeatBugs heatbugs = (HeatBugs)state;
-                    HeatBugs heatbugs = (HeatBugs)state.getSimulation(HeatBugs.class);
-//                    HeatBugs heatbugs = ((FlockersAndHeatBugs)state).heatBugs;
+                    HeatBugs heatbugs = (HeatBugs)state;
                     int _gridWidth = heatbugs.valgrid.getWidth();  // read-only, so threadsafe with other one
                     diffuse(heatbugs, _gridWidth/2, _gridWidth);
                     }
@@ -59,9 +55,7 @@ public /*strictfp*/ class ThreadedDiffuser implements Steppable
         diffusers.step(state);
                 
         // copy HeatBugs.this.valgrid2 to HeatBugs.this.valgrid
-//        HeatBugs heatbugs = (HeatBugs)state;
-        HeatBugs heatbugs = (HeatBugs)state.getSimulation(HeatBugs.class);
-//        HeatBugs heatbugs = ((FlockersAndHeatBugs)state).heatBugs;
+        HeatBugs heatbugs = (HeatBugs)state;
         heatbugs.valgrid.setTo(heatbugs.valgrid2);
         }
         

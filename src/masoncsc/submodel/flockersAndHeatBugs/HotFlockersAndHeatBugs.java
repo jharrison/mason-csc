@@ -1,10 +1,11 @@
 package masoncsc.submodel.flockersAndHeatBugs;
 
+import masoncsc.submodel.MetaSchedule;
+import masoncsc.submodel.MetaSimState;
+import masoncsc.submodel.MultiSchedule;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.Flocker;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.Flockers;
 import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
-import masoncsc.submodel.util.MetaSchedule;
-import masoncsc.submodel.util.MultiSchedule;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.field.continuous.Continuous2D;
@@ -12,7 +13,7 @@ import sim.util.Bag;
 import sim.util.Double2D;
 import sim.util.Int2D;
 
-public class HotFlockersAndHeatBugs extends SimState
+public class HotFlockersAndHeatBugs extends MetaSimState
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -70,7 +71,7 @@ public class HotFlockersAndHeatBugs extends SimState
 
 						@Override
 						public void step(SimState state) {
-					        final Flockers flock = (Flockers)state.getSimulation(Flockers.class);
+					        final Flockers flock = (Flockers)state;
 
 					        loc = flock.flockers.getObjectLocation(this);
 
@@ -120,12 +121,8 @@ public class HotFlockersAndHeatBugs extends SimState
 			} // end start()
 			
 		}; // end new Flockers ... 
-		
 
-		if (!sharedSchedule)
-			schedule = new MetaSchedule(new SimState[] { flockers, heatBugs } );
-//			schedule = new MultiSchedule(new SimState[] { flockers, heatBugs } );
-		
+		setSimStates(new SimState[] { flockers, heatBugs });
 	}
 	
 	private void generateFlockerHeat(Double2D loc) {
@@ -194,45 +191,13 @@ public class HotFlockersAndHeatBugs extends SimState
 		
 		return new Int2D(x,y);
 	}
-	
-	/**
-	 * This function allows a Steppable to get a specific type of simulation. 
-	 * This would be handy in cases where the model contains submodels.
-	 * @param c
-	 * @return
-	 */
-	@Override
-	public SimState getSimulation(Class<?> c) {
-		if (c.equals(Flockers.class))	return flockers;
-		if (c.equals(HeatBugs.class))	return heatBugs;
-		
-		return this;
-	}
-	
-	/**
-	 * This function exists so it can be overridden and stubbed out when running from the GUI.
-	 */
-	public void startSubmodels() {
-		flockers.start();
-		heatBugs.start();	
-		mergeSchedules();	
-	}
-	
-	public void mergeSchedules() {
-		if (sharedSchedule) {
-			schedule.merge(flockers.schedule);
-			schedule.merge(heatBugs.schedule);
-//			flockers.schedule = schedule;	// no longer necessary. TODO Or is it?
-//			heatBugs.schedule = schedule;	// no longer necessary. TODO Or is it?
-		}
-	}
+
 	
 
 	@SuppressWarnings("serial")
 	@Override
 	public void start() {
 		super.start();
-		startSubmodels();
 		
 //		if (!sharedSchedule) {
 //			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {

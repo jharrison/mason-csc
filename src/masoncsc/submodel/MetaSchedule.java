@@ -1,4 +1,4 @@
-package masoncsc.submodel.util;
+package masoncsc.submodel;
 
 import java.util.HashSet;
 
@@ -20,7 +20,7 @@ public class MetaSchedule extends Schedule
     public MetaSchedule(SimState[] states, int[] orderings)
         {
         if (states.length != orderings.length)
-            throw new RuntimeException("You dummy");
+            throw new RuntimeException("Error: arrays must be the same length.");
                 
         for(int i = 0; i < states.length; i++)
             addSimState(states[i], orderings[i]);

@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
+import masoncsc.submodel.MetaGUIState;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
 import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
 
@@ -16,7 +17,7 @@ import sim.portrayal.Inspector;
 import sim.portrayal.SimpleInspector;
 import sim.portrayal.inspector.TabbedInspector;
 
-public class HotFlockersAndHeatBugsWithUI extends GUIState
+public class HotFlockersAndHeatBugsWithUI extends MetaGUIState
 {
 	FlockersWithUI flockersWithUI;
 	HeatBugsWithUI heatBugsWithUI;
@@ -24,20 +25,11 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
     public Display2D display;
     public JFrame displayFrame;
 
-	public HotFlockersAndHeatBugsWithUI(SimState state) {
-		super(state);
-		flockersWithUI = new FlockersWithUI(((HotFlockersAndHeatBugs)state).flockers);
-		heatBugsWithUI = new HeatBugsWithUI(((HotFlockersAndHeatBugs)state).heatBugs);
-	}
-
-	@SuppressWarnings("serial")
 	public HotFlockersAndHeatBugsWithUI() {
-		super(new HotFlockersAndHeatBugs(System.currentTimeMillis()) {
-			@Override
-			public void startSubmodels() {}		// do nothing, they'll be started by their GUI states 		
-		});
+		super(new HotFlockersAndHeatBugs(System.currentTimeMillis()));
 		flockersWithUI = new FlockersWithUI(((HotFlockersAndHeatBugs)state).flockers);
 		heatBugsWithUI = new HeatBugsWithUI(((HotFlockersAndHeatBugs)state).heatBugs);
+		setGUIStates(new GUIState[] { flockersWithUI, heatBugsWithUI });
 	}
 
 	public Object getSimulationInspectedObject() {
@@ -47,24 +39,15 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
     @Override
     public Inspector getInspector() {
 		TabbedInspector i = new TabbedInspector();
-		i.addInspector(new SimpleInspector((HotFlockersAndHeatBugs)state, this, null, getMaximumPropertiesForInspector()), "Hybrid");
-		i.addInspector(new SimpleInspector(((HotFlockersAndHeatBugs)state).flockers, this, null, getMaximumPropertiesForInspector()), "Flockers");
-		i.addInspector(new SimpleInspector(((HotFlockersAndHeatBugs)state).heatBugs, this, null, getMaximumPropertiesForInspector()), "Heat Bugs");
+		i.addInspector(new SimpleInspector((HotFlockersAndHeatBugs)state, this), "Hybrid");
+		i.addInspector(new SimpleInspector(((HotFlockersAndHeatBugs)state).flockers, this), "Flockers");
+		i.addInspector(new SimpleInspector(((HotFlockersAndHeatBugs)state).heatBugs, this), "Heat Bugs");
 		i.setVolatile(false);
 		return i;
 	}
 
-	public void start() {
-		super.start();
-		flockersWithUI.start();
-		heatBugsWithUI.start();
-		((HotFlockersAndHeatBugs)state).mergeSchedules();
-	}
-
 	public void init(final Controller c) {
 		super.init(c);
-		flockersWithUI.init(c);
-		heatBugsWithUI.init(c);
 		
 		// ----- Flockers
         // make the displayer
@@ -86,22 +69,6 @@ public class HotFlockersAndHeatBugsWithUI extends GUIState
 
 		((Console)controller).setSize(400, 600);
 
-	}
-
-	@Override
-	public boolean step() {
-		boolean result = super.step();
-		flockersWithUI.display.step(state);
-		heatBugsWithUI.display.step(state);
-		display.step(state);	// For some reason, the hybrid display only updates the first run. Subsequent runs don't update. TODO figure out why
-
-		return result;
-	}
-
-	public void quit() {
-		super.quit();
-		flockersWithUI.quit();
-		heatBugsWithUI.quit();
 	}
 
 	public static void main(String[] args) {

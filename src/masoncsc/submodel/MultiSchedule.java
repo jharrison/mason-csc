@@ -1,4 +1,4 @@
-package masoncsc.submodel.util;
+package masoncsc.submodel;
 
 import java.util.ArrayList;
 import java.util.Collections;

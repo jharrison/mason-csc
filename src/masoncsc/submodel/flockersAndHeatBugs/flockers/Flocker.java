@@ -133,7 +133,7 @@ public class Flocker implements Steppable, sim.portrayal.Orientable2D
     
     public void step(SimState state)
         {
-        final Flockers flock = (Flockers)state.getSimulation(Flockers.class);
+        final Flockers flock = (Flockers)state;
 
         loc = flock.flockers.getObjectLocation(this);
 
