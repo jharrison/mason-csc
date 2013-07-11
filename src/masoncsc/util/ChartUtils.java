@@ -20,9 +20,9 @@ public class ChartUtils
      * the user).
      * @param updateInterval How frequently the chart needs refreshed.
      */
-    static public void attachTimeSeries(XYSeries series, String xLabel, Controller c, int updateInterval)
+    static public TimeSeriesChartGenerator attachTimeSeries(XYSeries series, String xLabel, Controller c, int updateInterval)
     {
-        attachTimeSeries(new XYSeries[] { series },
+        return attachTimeSeries(new XYSeries[] { series },
             series.getDescription(),
             xLabel, 
             series.getDescription(),
