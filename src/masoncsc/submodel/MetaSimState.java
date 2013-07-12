@@ -32,6 +32,9 @@ public class MetaSimState extends SimState
 	@Override
 	public void start() {
 		super.start();
+		
+		if (simStates == null)
+			throw new NullPointerException("Subclasses of MetaSimState must call setSimStates(new SimState[] { ... }) from their constructor.");
 
 		if (startSimStatesManually)
 			for (int i = 0; i < simStates.length; i++) {

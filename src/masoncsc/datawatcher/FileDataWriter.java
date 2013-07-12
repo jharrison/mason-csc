@@ -1,20 +1,16 @@
 package masoncsc.datawatcher;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Records the values observed by a DataWatcher to a CSV file.
- * 
+ *
  * @author Eric 'Siggy' Scott
+ * @author hkarbasi
  */
 public class FileDataWriter implements DataListener
 {
-    private final Writer outputWriter;
-    
+    public DataOutputStream out;
     /**
      * Initialize an output stream to the specified file.  If the file does not
      * exist, create.  If it does, overwrite it.  Prints an exception to stderr
@@ -22,20 +18,21 @@ public class FileDataWriter implements DataListener
      * 
      * @param path Path to the output file.
      */
-    public FileDataWriter(String path)
+    public void InitFileDataWriter(String path, DataWatcher source)
     {
-        FileOutputStream stream = null;
         try
         {
-            stream = new FileOutputStream(path);
+            out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
+            out.writeBytes(source.getCSVHeader());
         }
         catch(FileNotFoundException e)
         {
             System.err.println("Could not open file: " + e.getMessage());
         }
-        finally
+
+        catch (IOException e)
         {
-            outputWriter = new OutputStreamWriter(stream);
+            System.err.println("Could not write to file: " + e.getMessage());
         }
     }
     
@@ -46,7 +43,7 @@ public class FileDataWriter implements DataListener
     {
         try
         {
-            outputWriter.close();
+            out.flush();
         }
         catch(IOException e)
         {
@@ -59,7 +56,7 @@ public class FileDataWriter implements DataListener
     {
         try
         {
-            outputWriter.append(source.dataToCSV() + "\n");
+            this.out.writeBytes(source.dataToCSV() + "\n");
         }
         catch(IOException e)
         {
