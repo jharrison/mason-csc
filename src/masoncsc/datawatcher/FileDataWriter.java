@@ -56,7 +56,8 @@ public class FileDataWriter implements DataListener
     {
         try
         {
-            this.out.writeBytes(source.dataToCSV() + "\n");
+            if(!source.dataToCSV().equals("null"))
+                this.out.writeBytes(source.dataToCSV() + "\n");
         }
         catch(IOException e)
         {
