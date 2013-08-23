@@ -1,5 +1,7 @@
 package masoncsc.util;
 
+import java.util.ArrayList;
+
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.field.grid.DoubleGrid2D;
@@ -52,9 +54,24 @@ public class TestModel extends SimState
 
 	public static void main(String[] args) {
 		
-		MutableDouble2D point = new MutableDouble2D(5, 5);
-		setVar(point);
-		System.out.println("point:" + point);
+//		MutableDouble2D point = new MutableDouble2D(5, 5);
+//		setVar(point);
+//		System.out.println("point:" + point);
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		
+		System.out.println(list.toString());
+		
+		ArrayList<Integer> list2 = new ArrayList<Integer>(list);
+		
+		list2.remove(0);
+
+		System.out.println(list2.toString());
+		System.out.println(list.toString());
 	
 	}
 	

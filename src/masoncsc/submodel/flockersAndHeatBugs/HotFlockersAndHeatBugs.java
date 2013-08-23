@@ -1,13 +1,10 @@
 package masoncsc.submodel.flockersAndHeatBugs;
 
-import masoncsc.submodel.MetaSchedule;
 import masoncsc.submodel.MetaSimState;
-import masoncsc.submodel.MultiSchedule;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.Flocker;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.Flockers;
 import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugs;
 import sim.engine.SimState;
-import sim.engine.Steppable;
 import sim.field.continuous.Continuous2D;
 import sim.util.Bag;
 import sim.util.Double2D;
@@ -192,33 +189,10 @@ public class HotFlockersAndHeatBugs extends MetaSimState
 		return new Int2D(x,y);
 	}
 
-	
-
-	@SuppressWarnings("serial")
 	@Override
 	public void start() {
 		super.start();
-		
-//		if (!sharedSchedule) {
-//			schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {
-//				if (flockers.schedule.getTime() <= heatBugs.schedule.getTime())
-//					flockers.schedule.step(flockers);
-//				if (heatBugs.schedule.getTime() <= flockers.schedule.getTime())
-//					heatBugs.schedule.step(heatBugs);
-//
-////				System.out.format("Super: %.2f (%d), Flockers: %.2f (%d), HeatBugs: %.2f (%d)\n", 
-////						schedule.getTime(), schedule.getSteps(),
-////						flockers.schedule.getTime(), flockers.schedule.getSteps(),
-////						heatBugs.schedule.getTime(), heatBugs.schedule.getSteps());
-//				
-//			}}, 0, 1.0);
-//		}
-		
-		// unless we schedule something the simulation will just end, so do the NO-OP
-//		schedule.scheduleRepeating(new Steppable() { public void step(SimState state) {}}, 1, 1.0);
 	}
-	
-	
 
 	public static void main(String[] args) {
 		doLoop(HotFlockersAndHeatBugs.class, args);

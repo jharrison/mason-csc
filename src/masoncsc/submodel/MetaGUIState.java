@@ -28,9 +28,7 @@ public class MetaGUIState extends GUIState
     public Inspector getInspector() {
 		TabbedInspector ti = new TabbedInspector();
 		for (int i = 0; i < guiStates.length; i++)
-			ti.addInspector(new SimpleInspector(guiStates[i].state, guiStates[i]),
-					GUIState.getTruncatedName(guiStates[i].state.getClass()));
-//					GUIState.getName());
+			ti.addInspector(new SimpleInspector(guiStates[i].state, guiStates[i]), GUIState.getName(guiStates[i].getClass()));
 		ti.setVolatile(false);
 		return ti;
 	}
