@@ -2,7 +2,6 @@ package masoncsc.datawatcher;
 
 
 import masoncsc.util.Pair;
-
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 
