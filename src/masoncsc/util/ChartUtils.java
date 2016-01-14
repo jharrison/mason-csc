@@ -70,7 +70,7 @@ public class ChartUtils
      * @param c Controller to register the chart.
      * @return HistogramGenerator which can be used to update data later.
      */
-    static public HistogramGenerator attachHistogram(final double[] data, final int numberOfBins, String title, String xLabel, String yLabel, Controller c)
+    static public HistogramGenerator attachHistogram(final double[] data, final int numberOfBins, String title, String xLabel, String yLabel, Controller c, boolean visible)
     {
         HistogramGenerator gen = new HistogramGenerator();
         gen.setTitle(title);
@@ -81,7 +81,7 @@ public class ChartUtils
         JFrame frame = gen.createFrame();
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         frame.setTitle(title);
-        frame.setVisible(true);
+        frame.setVisible(visible);
         c.registerFrame(frame);
         
         return gen;
