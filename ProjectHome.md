@@ -1,0 +1,1 @@
+This repository contains proofs of concept, testbeds, and other odds and ends that are worth sharing, but don't really belong in the core MASON repo.
