@@ -32,6 +32,38 @@ public class Stats
 	static public double normalToLognormal(double mu, double sigma, double normalVal) {
 		return Math.exp(mu + sigma*normalVal);
 	}
+  
+
+	/**
+	 * Calculate the Pearson product-moment correlation coefficient.
+	 * Code adapted from here: http://stackoverflow.com/a/17448499
+	 */
+	static public double calcCorrelation(double[] x, double[] y) {
+		double sumX = 0;
+		double sumX2 = 0;
+		double sumY = 0;
+		double sumY2 = 0;
+		double sumXY = 0;
+
+		int n = x.length < y.length ? x.length : y.length;
+
+		for (int i = 0; i < n; ++i) {
+			double _x = x[i];
+			double _y = y[i];
+
+			sumX += _x;
+			sumX2 += _x * _x;
+			sumY += _y;
+			sumY2 += _y * _y;
+			sumXY += _x * _y;
+		}
+
+		double stdX = Math.sqrt(sumX2 / n - sumX * sumX / n / n);
+		double stdY = Math.sqrt(sumY2 / n - sumY * sumY / n / n);
+		double covariance = (sumXY / n - sumX * sumY / n / n);
+
+		return covariance / stdX / stdY;
+	}
 	
     /**
      * Calculate Kullback-Liebler divergence. Returns the KL divergence, K(p1 || p2).
@@ -176,6 +208,58 @@ public class Stats
     	}
     	
     	return total;    	
+    }
+    
+
+    /**
+     * Calculate the largest vertical distance between the ECDFs of the given distributions.
+     * This should be the same as the Kolmogorov-Smirnov statistic.
+     * @param a
+     * @param b
+     * @return
+     */
+    static public double calcMaxVerticalDistanceBetweenECDFs(double a[], double b[]) {
+    	Arrays.sort(a);
+    	Arrays.sort(b);
+    	
+    	double[][] ecdfA = calcECDF(a);
+    	double[][] ecdfB = calcECDF(b);
+
+    	double[] ax = ecdfA[0];
+    	double[] bx = ecdfB[0];
+    	
+    	double maxHeight = Double.NEGATIVE_INFINITY;
+    	
+    	// Combine and sort the x values
+    	// note: this could be sped up by looping through both arrays at the same time instead of calling sort
+    	// note: there may be duplicates, but not more than one per value 
+    	double[] combinedX = new double[ax.length + bx.length];
+    	for (int i = 0; i < ax.length; i++)
+    		combinedX[i] = ax[i];
+    	for (int i = 0; i < bx.length; i++)
+    		combinedX[ax.length + i] = bx[i];
+    	Arrays.sort(combinedX);
+    	
+    	double total = 0;
+    	double lastX = combinedX[0];
+    	double x, width, height, yA, yB;
+    	
+    	for (int i = 0; i < combinedX.length; i++) {
+    		x = combinedX[i];
+    		width = x - lastX;
+
+    		// note: this can be optimized by not doing binary searches and by instead keeping track of each one's last x val
+    		yA = binarySearchECDF(ax, ecdfA[1], lastX);
+    		yB = binarySearchECDF(bx, ecdfB[1], lastX);
+
+   			height = Math.abs(yA - yB);
+   			if (height > maxHeight)
+   				maxHeight = height;
+
+   			lastX = x;
+    	}
+    	
+    	return maxHeight;    	
     }
 
     
