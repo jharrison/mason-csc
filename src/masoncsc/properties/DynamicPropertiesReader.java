@@ -118,7 +118,7 @@ public class DynamicPropertiesReader implements Steppable
 		if (!properties.isEmpty()) {
 			TimestampedProperties p = properties.get(0);
 			if (p.time == 0)
-				useProperties(p);
+				useProperties(p.properties);
 		}			
 	}
 	
@@ -136,7 +136,7 @@ public class DynamicPropertiesReader implements Steppable
 		}
 		
 		if (state.schedule.getTime() == nextProps.time) {
-			useProperties(nextProps);
+			useProperties(nextProps.properties);
 			nextProps = null;
 		}
 	}
