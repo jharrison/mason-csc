@@ -37,7 +37,7 @@ public class PoissonEventGenerator implements Steppable
 	public void setEventsPerStep(double val) { eventsPerStep = val;	}
 	
 	/** Poisson number generator. */
-	private Poisson poissonDist; 
+	public Poisson poissonDist; 
 	
 	/**
 	 * Construct a poisson event generator. 
