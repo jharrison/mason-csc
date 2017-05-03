@@ -1,7 +1,6 @@
 package masoncsc.submodel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import sim.engine.Schedule;

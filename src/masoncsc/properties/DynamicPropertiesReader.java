@@ -79,7 +79,6 @@ public class DynamicPropertiesReader implements Steppable
 			else {
 //				System.out.println("Single line!");
 				blocks = new ArrayList<String>();
-				String[] array = all.split("\n");
 				for (String s : lines)
 					blocks.add(s.replace(',', '\n'));
 			}

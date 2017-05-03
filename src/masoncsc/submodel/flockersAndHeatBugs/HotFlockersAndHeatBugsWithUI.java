@@ -7,12 +7,10 @@ import javax.swing.JFrame;
 import masoncsc.submodel.MetaGUIState;
 import masoncsc.submodel.flockersAndHeatBugs.flockers.FlockersWithUI;
 import masoncsc.submodel.flockersAndHeatBugs.heatBugs.HeatBugsWithUI;
-
 import sim.display.Console;
 import sim.display.Controller;
 import sim.display.Display2D;
 import sim.display.GUIState;
-import sim.engine.SimState;
 import sim.portrayal.Inspector;
 import sim.portrayal.SimpleInspector;
 import sim.portrayal.inspector.TabbedInspector;

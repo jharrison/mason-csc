@@ -24,10 +24,10 @@ public class MTFUtilities
         }
         
     /** Shuffles the list, see Collections.shuffle(list, random) */
-    public static void shuffle(List list, MersenneTwisterFast mtf)
+    public static <T> void shuffle(List<T> list, MersenneTwisterFast mtf)
         {
         int numObjs = list.size();
-        Object obj;
+        T obj;
         int rand;
         
         for(int x=numObjs-1; x >= 1 ; x--)
@@ -69,13 +69,21 @@ public class MTFUtilities
 		
 		ArrayList<Integer> list = new ArrayList<Integer>(sortedList);
 		
-		for (int i = 0; i < numTests; i++) {
-			list = new ArrayList<Integer>(sortedList);
-			MTFUtilities.shuffle(list, random);
-//			Collections.shuffle(list);
-			System.out.format("%f\n", MTFUtilities.calcHammingDistance(list));
-		}
+//		for (int i = 0; i < numTests; i++) {
+//			list = new ArrayList<Integer>(sortedList);
+//			MTFUtilities.shuffle(list, random);
+////			Collections.shuffle(list);
+//			System.out.format("%.0f\n", MTFUtilities.calcHammingDistance(list));
+//		}
 		
+		ArrayList<String> stringList = new ArrayList<String>();
+		stringList.add("A");
+		stringList.add("B");
+		stringList.add("C");
+		MTFUtilities.shuffle(stringList, random);
+		System.out.println(stringList.toString());
+		
+		// Conclusion: shuffle works with different types of lists
 	}
     
     }

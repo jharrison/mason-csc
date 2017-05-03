@@ -240,13 +240,11 @@ public class Stats
     		combinedX[ax.length + i] = bx[i];
     	Arrays.sort(combinedX);
     	
-    	double total = 0;
     	double lastX = combinedX[0];
-    	double x, width, height, yA, yB;
+    	double x, height, yA, yB;
     	
     	for (int i = 0; i < combinedX.length; i++) {
     		x = combinedX[i];
-    		width = x - lastX;
 
     		// note: this can be optimized by not doing binary searches and by instead keeping track of each one's last x val
     		yA = binarySearchECDF(ax, ecdfA[1], lastX);

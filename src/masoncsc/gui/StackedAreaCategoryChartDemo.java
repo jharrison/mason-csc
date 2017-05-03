@@ -24,8 +24,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
-import org.jfree.data.xy.AbstractIntervalXYDataset;
-import org.jfree.data.xy.CategoryTableXYDataset;
 import org.jfree.data.xy.TableXYDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
@@ -121,7 +119,7 @@ public class StackedAreaCategoryChartDemo extends ApplicationFrame {
 		});
         
 
-        final JComboBox cmbCullMethod = new JComboBox();
+        final JComboBox<String> cmbCullMethod = new JComboBox<String>();
         cmbCullMethod.addItem("cullData1");
         cmbCullMethod.addItem("cullData2");
         cmbCullMethod.addItem("cullData3");
@@ -133,7 +131,7 @@ public class StackedAreaCategoryChartDemo extends ApplicationFrame {
 		});
         
 
-        final JComboBox combo = new JComboBox();
+        final JComboBox<String> combo = new JComboBox<String>();
         combo.addItem("Fast");
         combo.addItem("Medium");
         combo.addItem("Slow");
@@ -184,7 +182,7 @@ public class StackedAreaCategoryChartDemo extends ApplicationFrame {
         }
         
         if (step % timingInterval == 0) {
-        	long prevTimestamp = timestamp;
+//        	long prevTimestamp = timestamp;
         	timestamp = System.nanoTime();
         	
 //        	System.out.format("%.3f ms per step, %d values\n", 

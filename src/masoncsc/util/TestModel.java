@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 import sim.field.grid.DoubleGrid2D;
-import sim.util.Double2D;
 import sim.util.MutableDouble2D;
 
 public class TestModel extends SimState

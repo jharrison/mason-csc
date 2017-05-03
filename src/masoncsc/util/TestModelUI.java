@@ -9,7 +9,6 @@ import sim.display.Display2D;
 import sim.display.GUIState;
 import sim.engine.SimState;
 import sim.portrayal.grid.FastValueGridPortrayal2D;
-import sim.util.gui.SimpleColorMap;
 
 public class TestModelUI extends GUIState
 {

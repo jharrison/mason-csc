@@ -128,7 +128,7 @@ public class TypedBag<T> extends ArrayList<T> implements Indexed
         }
     
     /** Always returns null.  This method is to adhere to Indexed. */
-    public Class componentType()
+    public Class<?> componentType()
         {
         return null;
         }
